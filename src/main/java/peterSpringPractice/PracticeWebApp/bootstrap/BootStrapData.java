@@ -36,28 +36,37 @@ public class BootStrapData implements CommandLineRunner{	// tells Spring to look
 		
 		Author eric = new Author("Eric", "Evans");
 		Book ddd = new Book("Domain Driven Design","123123");
+		Publisher bmu = new Publisher();
+		bmu.setName("BMU");
+		bmu.setCity("Berlin");
+		
+		publisherRepository.save(bmu);
 		
 		eric.getBooks().add(ddd);
 		ddd.getAuthors().add(eric);
+		
+		ddd.setPublisher(bmu);
+		bmu.getBooks().add(ddd);
+		
 		authorRepository.save(eric);
 		bookRepository.save(ddd);
+		publisherRepository.save(bmu);
 		
 		Author rod =  new Author("Rod", "Johnson");
 		Book noEJB = new Book("J2EE Development without EJB", "237643782");
 		
 		rod.getBooks().add(noEJB);
 		noEJB.getAuthors().add(rod);
+		noEJB.setPublisher(bmu);
+		bmu.getBooks().add(noEJB);
 		
-		this.authorRepository.save(rod);
-		this.bookRepository.save(noEJB);
-		
-		System.out.println("Number of Books: " + bookRepository.count());
-		
-		Publisher bmu = new Publisher();
-		bmu.setName("BMU");
-		bmu.setCity("Berlin");
+		authorRepository.save(rod);
+		bookRepository.save(noEJB);
 		publisherRepository.save(bmu);
-		System.out.println("Number of Publishers: " + publisherRepository.count());
+		
+		System.out.println("Publisher Count: " + publisherRepository.count());
+		System.out.println("Number of Books: " + bookRepository.count());
+		System.out.println("Publisher Number of books: " + bmu.getBooks().size());
 	}
 
 }
